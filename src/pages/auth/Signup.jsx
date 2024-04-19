@@ -55,13 +55,17 @@ function Signup() {
                 onChange={(e) => setPass(e.target.value)}
               />
             </label>
-            <select className="select select-bordered w-full max-w-xs">
-              <option disabled selected>
+            <select
+              className="select select-bordered w-full max-w-xs"
+              defaultValue="default"
+            >
+              <option value="default" disabled>
                 Who are you?
               </option>
-              <option>Customer</option>
-              <option>Engineer</option>
+              <option value="customer">Customer</option>
+              <option value="engineer">Engineer</option>
             </select>
+
             <p className="text-center">
               Already have an account? Login in here
             </p>
