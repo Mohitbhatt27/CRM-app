@@ -88,7 +88,7 @@ function Login() {
             />
           </label>
           <p className="text-center">
-            Don`t have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               className="font-medium text-[#6CB6F1] hover:underline"
               to="/signup"

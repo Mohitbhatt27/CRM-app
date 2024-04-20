@@ -36,7 +36,11 @@ function Signup() {
 
   function handleUserType(e) {
     const userTypeSelected = e.target.value;
-    setSignUpDetails({ ...signUpDetails, userType: userTypeSelected, userStatus: (userTypeSelected=="Customer")?"approved":"suspended" });
+    setSignUpDetails({
+      ...signUpDetails,
+      userType: userTypeSelected,
+      userStatus: userTypeSelected == "Customer" ? "approved" : "suspended",
+    });
   }
 
   async function onSubmit() {
@@ -48,6 +52,19 @@ function Signup() {
       !signUpDetails.userStatus ||
       !signUpDetails.clientName
     ) {
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(signUpDetails.email)) {
+      // Handle invalid email
+      alert("Please enter a valid email address.");
+      return;
+    }
+  
+    // Password validation
+    if (signUpDetails.password.length < 6) {
+      // Handle invalid password
+      alert("Password must be at least 6 characters long.");
       return;
     }
     const response = await dispatch(signup(signUpDetails));
@@ -75,7 +92,14 @@ function Signup() {
               >
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
               </svg>
-              <input type="text" className="grow" placeholder="Username" value={signUpDetails.name} name="name" onChange={handleInputChange}/>
+              <input
+                type="text"
+                className="grow"
+                placeholder="Username"
+                value={signUpDetails.name}
+                name="name"
+                onChange={handleInputChange}
+              />
             </label>
             <label className="input input-bordered flex items-center gap-2">
               <svg
@@ -87,7 +111,14 @@ function Signup() {
                 <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
                 <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
               </svg>
-              <input type="text" className="grow" placeholder="Email" value={signUpDetails.email} name="email" onChange={handleInputChange}/>
+              <input
+                type="text"
+                className="grow"
+                placeholder="Email"
+                value={signUpDetails.email}
+                name="email"
+                onChange={handleInputChange}
+              />
             </label>
             <label className="input input-bordered flex items-center gap-2">
               <svg
@@ -102,7 +133,14 @@ function Signup() {
                   clipRule="evenodd"
                 />
               </svg>
-              <input type="password" className="grow" placeholder="Password" value={signUpDetails.password} name="password" onChange={handleInputChange}/>
+              <input
+                type="password"
+                className="grow"
+                placeholder="Password"
+                value={signUpDetails.password}
+                name="password"
+                onChange={handleInputChange}
+              />
             </label>
 
             <select
@@ -118,8 +156,6 @@ function Signup() {
               <option value="admin">Admin</option>
             </select>
 
-      
-
             <label className="input input-bordered flex items-center gap-2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -129,7 +165,14 @@ function Signup() {
               >
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
               </svg>
-              <input type="text" className="grow" placeholder="Client Name" value={signUpDetails.clientName} name="clientName" onChange={handleInputChange}/>
+              <input
+                type="text"
+                className="grow"
+                placeholder="Client Name"
+                value={signUpDetails.clientName}
+                name="clientName"
+                onChange={handleInputChange}
+              />
             </label>
 
             <p className="text-center">
