@@ -1,7 +1,62 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import { signup } from "../../Redux/Slices/AuthSlice";
 
 function Signup() {
-  const [pass, setPass] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [signUpDetails, setSignUpDetails] = useState({
+    email: "",
+    password: "",
+    name: "",
+    userType: "",
+    clientName: "",
+    userStatus: "",
+  });
+
+  function resetSignupState() {
+    setSignUpDetails({
+      email: "",
+      password: "",
+      name: "",
+      userType: "",
+      userStatus: "",
+      clientName: "",
+    });
+  }
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setSignUpDetails({ ...signUpDetails, [name]: value });
+  }
+
+  function handleUserType(e) {
+    const userTypeSelected = e.target.value;
+    setSignUpDetails({ ...signUpDetails, userType: userTypeSelected, userStatus: (userTypeSelected=="Customer")?"approved":"suspended" });
+  }
+
+  async function onSubmit() {
+    if (
+      !signUpDetails.email ||
+      !signUpDetails.password ||
+      !signUpDetails.name ||
+      !signUpDetails.userType ||
+      !signUpDetails.userStatus ||
+      !signUpDetails.clientName
+    ) {
+      return;
+    }
+    const response = await dispatch(signup(signUpDetails));
+    console.log(response);
+    if (response.payload) {
+      navigate("/login");
+    } else resetSignupState();
+  }
+
   return (
     <>
       <div className="flex justify-center items-center h-screen">
@@ -20,7 +75,7 @@ function Signup() {
               >
                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
               </svg>
-              <input type="text" className="grow" placeholder="Username" />
+              <input type="text" className="grow" placeholder="Username" value={signUpDetails.name} name="name" onChange={handleInputChange}/>
             </label>
             <label className="input input-bordered flex items-center gap-2">
               <svg
@@ -32,7 +87,7 @@ function Signup() {
                 <path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" />
                 <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
               </svg>
-              <input type="text" className="grow" placeholder="Email" />
+              <input type="text" className="grow" placeholder="Email" value={signUpDetails.email} name="email" onChange={handleInputChange}/>
             </label>
             <label className="input input-bordered flex items-center gap-2">
               <svg
@@ -47,30 +102,49 @@ function Signup() {
                   clipRule="evenodd"
                 />
               </svg>
-              <input
-                type="password"
-                className="grow"
-                placeholder="Password"
-                value={pass}
-                onChange={(e) => setPass(e.target.value)}
-              />
+              <input type="password" className="grow" placeholder="Password" value={signUpDetails.password} name="password" onChange={handleInputChange}/>
             </label>
+
             <select
               className="select select-bordered w-full max-w-xs"
               defaultValue="default"
+              onChange={handleUserType}
             >
               <option value="default" disabled>
-                Who are you?
+                User Type
               </option>
               <option value="customer">Customer</option>
               <option value="engineer">Engineer</option>
+              <option value="admin">Admin</option>
             </select>
 
+      
+
+            <label className="input input-bordered flex items-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="currentColor"
+                className="w-4 h-4 opacity-70"
+              >
+                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+              </svg>
+              <input type="text" className="grow" placeholder="Client Name" value={signUpDetails.clientName} name="clientName" onChange={handleInputChange}/>
+            </label>
+
             <p className="text-center">
-              Already have an account? Login in here
+              Already have an account?{" "}
+              <Link
+                className="font-medium text-[#6CB6F1] hover:underline"
+                to={"/login"}
+              >
+                Login here!
+              </Link>
             </p>
             <div className="card-actions flex item-center justify-center">
-              <button className="btn btn-primary">Sign up</button>
+              <button className="btn btn-primary" onClick={onSubmit}>
+                Sign up
+              </button>
             </div>
           </div>
         </div>

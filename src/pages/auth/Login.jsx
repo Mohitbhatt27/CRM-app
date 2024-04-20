@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { login } from "../../Redux/Slices/AuthSlice";
 
@@ -86,7 +87,15 @@ function Login() {
               value={loginDetails.password}
             />
           </label>
-          <p className="text-center">Don`t have an account? Sign up!</p>
+          <p className="text-center">
+            Don`t have an account?{" "}
+            <Link
+              className="font-medium text-[#6CB6F1] hover:underline"
+              to="/signup"
+            >
+              Sign up!
+            </Link>
+          </p>
           <div className="card-actions justify-center">
             <button
               className="btn btn-primary flex items-center"
