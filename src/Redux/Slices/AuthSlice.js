@@ -20,11 +20,10 @@ export const login = createAsyncThunk("/auth/login", async (data) => {
     });
     return await response;
   } catch (error) {
-    console.log(error);
+    console.log("error login", error);
   }
 });
-
-export const signup = createAsyncThunk("auth/signup", async (data) => {
+export const signup = createAsyncThunk("/auth/signup", async (data) => {
   try {
     const response = axiosInstance.post("auth/signup", data);
     toast.promise(response, {
@@ -34,35 +33,43 @@ export const signup = createAsyncThunk("auth/signup", async (data) => {
     });
     return await response;
   } catch (error) {
-    console.log(error);
+    console.log("printing error", error);
   }
 });
 
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      localStorage.clear();
+      state.role = "";
+      state.isLoggedIn = false;
+      state.data = undefined;
+      state.token = "";
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
+      console.log(action);
       if (!action.payload) return;
-
-      state.role = action.payload.data?.userData?.userType;
-      state.data = action.payload.data?.userData;
-      state.token = action.payload.data?.token;
-      state.isLoggedIn = action.payload.data?.token != undefined;
-
-      localStorage.setItem("role", action.payload.data?.userData?.userType);
-      localStorage.setItem(
-        "data",
-        JSON.stringify(action.payload.data?.userData)
-      );
-      localStorage.setItem("token", action.payload.data?.token);
+      state.isLoggedIn = action.payload?.data?.token != undefined;
+      state.data = action.payload?.data?.userData;
+      state.token = action.payload?.data?.token;
+      state.role = action.payload?.data?.userData?.userType;
+      localStorage.setItem("role", action.payload?.data?.userData?.userType);
       localStorage.setItem(
         "isLoggedIn",
-        action.payload.data?.token != undefined
+        action.payload?.data?.token != undefined
       );
+      localStorage.setItem(
+        "data",
+        JSON.stringify(action.payload?.data?.userData)
+      );
+      localStorage.setItem("token", action.payload?.data?.token);
     });
   },
 });
 
 export default authSlice.reducer;
+export const { logout } = authSlice.actions;
