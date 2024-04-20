@@ -39,7 +39,7 @@ function Signup() {
     setSignUpDetails({
       ...signUpDetails,
       userType: userTypeSelected,
-      userStatus: userTypeSelected == "Customer" ? "approved" : "suspended",
+      userStatus: userTypeSelected == "customer" ? "approved" : "suspended",
     });
   }
 
@@ -54,21 +54,7 @@ function Signup() {
     ) {
       return;
     }
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(signUpDetails.email)) {
-      // Handle invalid email
-      alert("Please enter a valid email address.");
-      return;
-    }
-  
-    // Password validation
-    if (signUpDetails.password.length < 6) {
-      // Handle invalid password
-      alert("Password must be at least 6 characters long.");
-      return;
-    }
     const response = await dispatch(signup(signUpDetails));
-    console.log(response);
     if (response.payload) {
       navigate("/login");
     } else resetSignupState();
@@ -151,9 +137,9 @@ function Signup() {
               <option value="default" disabled>
                 User Type
               </option>
-              <option value="customer">Customer</option>
-              <option value="engineer">Engineer</option>
-              <option value="admin">Admin</option>
+              <option value="customer">customer</option>
+              <option value="engineer">engineer</option>
+              <option value="admin">admin</option>
             </select>
 
             <label className="input input-bordered flex items-center gap-2">
