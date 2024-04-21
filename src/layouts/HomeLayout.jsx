@@ -37,10 +37,11 @@ function HomeLayout({ children }) {
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
           <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
             <li>
-              <a>View All Tickets</a>
+              <Link to="/">Home</Link>
             </li>
+
             <li>
-              <a>Dashboard</a>
+              <Link to="/dashboard">Dashboard</Link>
             </li>
 
             <li className="absolute bottom-8 w-5/6">
