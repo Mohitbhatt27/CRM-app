@@ -44,8 +44,8 @@ function HomeLayout({ children }) {
               <a>Dashboard</a>
             </li>
 
-            <li className="absolute bottom-8 w-3/4">
-              <div className="w-full flex justify-center items-center btn-primary bg-blue-500">
+            <li className="absolute bottom-8 w-5/6">
+              <div className="w-full flex justify-center items-center bg-blue-500">
                 {!authState.isLoggedIn ? (
                   <>
                     <Link
