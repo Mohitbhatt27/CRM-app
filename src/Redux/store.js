@@ -8,6 +8,7 @@ export const store = configureStore({
     auth: authSliceReducer,
     tickets: ticketSliceReducer,
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
   devTools: true,
 });

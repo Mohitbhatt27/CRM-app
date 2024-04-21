@@ -12,8 +12,7 @@ function HomeLayout({ children }) {
 
   function handleLogout() {
     dispatch(logout());
-    console.log(authState.isLoggedIn);
-    navigate("/");
+    navigate("/login");
   }
 
   useEffect(() => {
@@ -45,7 +44,7 @@ function HomeLayout({ children }) {
             </li>
 
             <li className="absolute bottom-8 w-5/6">
-              <div className="w-full flex justify-center items-center bg-blue-500">
+              <div className="w-full flex justify-center items-center bg-blue-500 hover:bg-indigo-400">
                 {!authState.isLoggedIn ? (
                   <>
                     <Link
@@ -81,7 +80,9 @@ function HomeLayout({ children }) {
       </div>
 
       <div className="flex items-start justify-center">
-        <div className="w-3/4">{children}</div>
+        <div className="w-3/4 flex items-center justify-center ml-10">
+          {children}
+        </div>
       </div>
     </div>
   );

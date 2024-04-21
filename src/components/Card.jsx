@@ -10,9 +10,9 @@ function Card({
 }) {
   return (
     <div
-      className={`border-b-8 ${borderColor} w-64 h-44 ${background} rounded-md flex flex-col justify-center items-center py-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 ...`}
+      className={`border-b-8 ${borderColor} w-64 h-44 ${background} rounded-md flex flex-col justify-center items-center py-2 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110  duration-300 ... `}
     >
-      <div className="text-primary-content text-2xl mb-2">
+      <div className="text-primary-content text-2xl mb-0.5">
         {children} <span>{titleText}</span>
       </div>
 
@@ -22,9 +22,9 @@ function Card({
         <div className={`text-7xl ${fontColor}`}>{quantity}</div>
         <div
           className={`radial-progress ${fontColor}`}
-          style={{ "--value": status }}
+          style={{ "--value": status * 100 }}
         >
-          {status}%
+          {(status * 100).toFixed(2)}%
         </div>
       </div>
     </div>

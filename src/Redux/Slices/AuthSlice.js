@@ -65,7 +65,7 @@ const authSlice = createSlice({
       localStorage.setItem(
         "data",
         JSON.stringify(action.payload?.data?.userData)
-      );
+      ); // "{id: 1, name: "abc"}"
       localStorage.setItem("token", action.payload?.data?.token);
     });
   },

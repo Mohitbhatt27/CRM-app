@@ -31,6 +31,8 @@ function Login() {
       return;
     }
 
+    console.log("calling login", loginDetails);
+
     const response = await dispatch(login(loginDetails));
     console.log(response);
     if (response.payload) {
