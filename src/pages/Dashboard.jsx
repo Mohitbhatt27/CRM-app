@@ -1,72 +1,118 @@
+import DataTable, { createTheme } from "react-data-table-component";
 import { AiOutlineDownload } from "react-icons/ai";
 import { usePDF } from "react-to-pdf";
 
 import useTickets from "../hooks/useTickets";
 import HomeLayout from "../layouts/HomeLayout";
-
+const ExpandedComponent = ({ data }) => (
+  <pre>{JSON.stringify(data, null, 2)}</pre>
+);
 function Dashboard() {
   const [ticketState] = useTickets();
+  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
-  const { toPDF, targetRef } = usePDF({filename: 'page.pdf'});
+  const columns = [
+    {
+      name: "Ticket Id",
+      selector: (row) => row._id,
+      reorder: true,
+      grow: 2,
+      sortable: true,
+    },
+    {
+      name: "Title",
+      selector: (row) => row.title,
+      reorder: true,
+      grow: 0.75,
+      sortable: true,
+    },
+    {
+      name: "Description",
+      selector: (row) => row.description,
+      reorder: true,
+      grow: 2,
+      sortable: true,
+    },
+    {
+      name: "Reporter",
+      selector: (row) => row.assignedTo,
+      reorder: true,
+      grow: 1.5,
+      sortable: true,
+    },
+    {
+      name: "Priority",
+      selector: (row) => row.ticketPriority,
+      reorder: true,
+      sortable: true,
+      grow: 0.5,
+    },
+    {
+      name: "Assignee",
+      selector: (row) => row.assignee,
+      reorder: true,
+      sortable: true,
+    },
+    {
+      name: "Status",
+      selector: (row) => row.status,
+      reorder: true,
+      sortable: true,
+    },
+  ];
+
+  createTheme(
+    "twilight",
+    {
+      text: {
+        primary: "#e0e0e0",
+        secondary: "#b0bec5",
+      },
+      background: {
+        default: "#263238",
+      },
+      context: {
+        background: "#37474f",
+        text: "#FFFFFF",
+      },
+      divider: {
+        default: "#455a64",
+      },
+      action: {
+        button: "#4fc3f7",
+        hover: "rgba(255, 255, 255, 0.1)",
+        disabled: "rgba(255, 255, 255, 0.3)",
+      },
+    },
+    "dark"
+  );
 
   return (
     <HomeLayout>
-      <div className="min-h-[90vh] flex flex-col items-center justify-center gap-2 w-full">
-        <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300 rounded-md">
-          Tickets Records <AiOutlineDownload className="inline cursor-pointer" onClick={() => toPDF()} />
-
-            
+      <div className="min-h-[90vh] flex flex-col items-center justify-center gap-2">
+        <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
+          Tickets Records{" "}
+          <AiOutlineDownload
+            className="cursor-pointer inline "
+            onClick={() => toPDF()}
+          />
         </div>
 
-        {/* Table */}
-        
-        <div ref={targetRef} className="flex flex-col w-full">
-          {/* Title row */}
-          <div className="flex text-white font-bold justify-between items-center gap-3 bg-purple-600 px-2 py-2 grid-cols-7 ">
-            <div className="table-title basis-[8%] justify-start">
-              Ticket Id
-            </div>
-            <div className="table-title basis-[12%]">Title</div>
-            <div className="table-title basis-[20%]">Description</div>
-            <div className="table-title basis-[20%]">Reporter</div>
-            <div className="table-title basis-[5%]">Priority</div>
-            <div className="table-title basis-[22%]">Assignee</div>
-            <div className="table-title basis-[13%] justify-end mr-4">
-              Status
-            </div>
-          </div>
-          {ticketState &&
-            ticketState.ticketList.map((ticket) => {
-              return (
-                <div
-                  key={ticket._id}
-                  className="my-4 font-normal text-sm flex justify-between items-center gap-3 bg-gray-100 hover:bg-gray-400 transition-all ease-in-out duration-300 text-black px-2 py-2 grid-cols-7"
-                >
-                  <div className="table-title basis-[8%] justify-start">
-                    {ticket._id.substring(0, 10)}
-                  </div>
-                  <div className="table-title basis-[12%]">{ticket.title}</div>
-                  <div className="table-title basis-[20%]">
-                    {ticket.description}
-                  </div>
-                  <div className="table-title basis-[20%]">
-                    {ticket.assignee}
-                  </div>
-                  <div className="table-title basis-[5%]">
-                    {ticket.ticketPriority}
-                  </div>
-                  <div className="table-title basis-[22%]">
-                    {ticket.assignedTo}
-                  </div>
-                  <div className="table-title basis-[13%] justify-end mr-4">
-                    {ticket.status}
-                  </div>
-                </div>
-              );
-            })}
+        <div ref={targetRef}>
+          {ticketState && (
+            <DataTable
+              columns={columns}
+              data={ticketState.ticketList}
+              expandableRows
+              expandableRowsComponent={ExpandedComponent}
+              theme="twilight"
+              pagination
+              fixedHeader
+              highlightOnHover
+            />
+          )}
         </div>
       </div>
-      {/* </div> */}
     </HomeLayout>
   );
 }
