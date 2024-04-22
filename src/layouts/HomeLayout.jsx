@@ -22,7 +22,7 @@ function HomeLayout({ children }) {
   }, []);
 
   return (
-    <div className="min-h-[90vh]">
+    <div className="min-h-[90vh] ">
       <div className="drawer absolute left-0 right-0 cursor-pointer mt-4 ml-4">
         <input id="my-drawer" type="checkbox" className="drawer-toggle" />
         <div className="drawer-content">
@@ -33,9 +33,9 @@ function HomeLayout({ children }) {
             />
           </label>
         </div>
-        <div className="drawer-side">
+        <div className="drawer-side z-40">
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
-          <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+          <ul className="menu p-4 w-60 min-h-full bg-base-100 text-base-content">
             <li>
               <Link to="/">Home</Link>
             </li>
