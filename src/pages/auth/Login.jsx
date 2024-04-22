@@ -87,6 +87,11 @@ function Login() {
               name="password"
               onChange={handleInputChange}
               value={loginDetails.password}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  onSubmit(); 
+                }
+              }}
             />
           </label>
           <p className="text-center">

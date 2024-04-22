@@ -158,6 +158,10 @@ function Signup() {
                 value={signUpDetails.clientName}
                 name="clientName"
                 onChange={handleInputChange}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    onSubmit(); 
+                  }}}
               />
             </label>
 
