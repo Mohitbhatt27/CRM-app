@@ -46,18 +46,22 @@ function Dashboard() {
       reorder: true,
       sortable: true,
       grow: 0.5,
+      center: true,
     },
     {
       name: "Assignee",
       selector: (row) => row.assignee,
       reorder: true,
       sortable: true,
+      center: true,
     },
+
     {
       name: "Status",
       selector: (row) => row.status,
       reorder: true,
       sortable: true,
+      center: true,
     },
   ];
 
