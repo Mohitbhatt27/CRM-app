@@ -39,6 +39,14 @@ function ListAllUsers() {
 
   const [userList, setUserList] = useState([]);
 
+  const [userDisplay, setUserDisplay] = useState({
+    name: "",
+    email: "",
+    userType: "",
+    userStatus: "",
+    clientName: "",
+  });
+
   async function loadUsers() {
     const response = await axiosInstance.get("/users", {
       headers: {
@@ -100,8 +108,57 @@ function ListAllUsers() {
             dense
             subHeaderAlign="right"
             direction="auto"
+            pointerOnHover
+            onRowClicked={(row) => {
+              setUserDisplay({
+                name: row.name,
+                email: row.email,
+                userType: row.userType,
+                userStatus: row.userStatus,
+                clientName: row.clientName,
+              });
+              document.getElementById("user_details_modal").showModal();
+            }}
           />
         )}
+        <dialog id="user_details_modal" className="modal">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">User Details!</h3>
+            <p className="py-4">
+              <p className="py-4">
+                Name:{" "}
+                <span className="text-yellow-500"> {userDisplay.name}</span>
+              </p>
+              <p className="py-4">
+                Client Name:{" "}
+                <span className="text-yellow-500">
+                  {" "}
+                  {userDisplay.clientName}
+                </span>
+              </p>
+              <p className="py-4">
+                Status:{" "}
+                <span className="text-yellow-500">
+                  {" "}
+                  {userDisplay.userStatus}
+                </span>
+              </p>
+              <p className="py-4">
+                Type:{" "}
+                <span className="text-yellow-500"> {userDisplay.userType}</span>
+              </p>
+              <p className="py-4">
+                email:{" "}
+                <span className="text-yellow-500"> {userDisplay.email}</span>
+              </p>
+            </p>
+            <div className="modal-action">
+              <form method="dialog">
+                <button className="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
     </HomeLayout>
   );
