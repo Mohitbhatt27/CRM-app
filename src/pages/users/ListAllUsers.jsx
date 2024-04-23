@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import DataTable, { createTheme } from "react-data-table-component";
 
+import UserDetailsModal from "../../components/UserDetailsModal";
 import axiosInstance from "../../config/axiosInstance";
 import HomeLayout from "../../layouts/HomeLayout";
 
@@ -45,6 +46,7 @@ function ListAllUsers() {
     userType: "",
     userStatus: "",
     clientName: "",
+    id: "",
   });
 
   async function loadUsers() {
@@ -116,49 +118,13 @@ function ListAllUsers() {
                 userType: row.userType,
                 userStatus: row.userStatus,
                 clientName: row.clientName,
+                id: row._id,
               });
               document.getElementById("user_details_modal").showModal();
             }}
           />
         )}
-        <dialog id="user_details_modal" className="modal">
-          <div className="modal-box">
-            <h3 className="font-bold text-lg">User Details!</h3>
-            <p className="py-4">
-              <p className="py-4">
-                Name:{" "}
-                <span className="text-yellow-500"> {userDisplay.name}</span>
-              </p>
-              <p className="py-4">
-                Client Name:{" "}
-                <span className="text-yellow-500">
-                  {" "}
-                  {userDisplay.clientName}
-                </span>
-              </p>
-              <p className="py-4">
-                Status:{" "}
-                <span className="text-yellow-500">
-                  {" "}
-                  {userDisplay.userStatus}
-                </span>
-              </p>
-              <p className="py-4">
-                Type:{" "}
-                <span className="text-yellow-500"> {userDisplay.userType}</span>
-              </p>
-              <p className="py-4">
-                email:{" "}
-                <span className="text-yellow-500"> {userDisplay.email}</span>
-              </p>
-            </p>
-            <div className="modal-action">
-              <form method="dialog">
-                <button className="btn">Close</button>
-              </form>
-            </div>
-          </div>
-        </dialog>
+        <UserDetailsModal key={userDisplay.email} user={userDisplay} />
       </div>
     </HomeLayout>
   );
