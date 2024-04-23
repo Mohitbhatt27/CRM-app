@@ -9,7 +9,7 @@ function UserDetailsModal({ user, resetTable }) {
   async function handleUserChange(e) {
     const { category, updatedValue } = e;
 
-    toast("Updating the user....");
+    toast(`Updating ${category}... `);
     try {
       const response = await axiosInstance.patch(
         "user/updateUser",
@@ -27,7 +27,7 @@ function UserDetailsModal({ user, resetTable }) {
         }
       );
       if (response?.data?.result) {
-        toast.success("User Status Updated!");
+        toast.success(`Successfully updated ${category} `);
         const user = response?.data?.result;
         setUserDisplay({
           ...userDisplay,
@@ -40,14 +40,14 @@ function UserDetailsModal({ user, resetTable }) {
         resetTable();
       }
     } catch (error) {
-      toast.error("Error while updating user status");
+      toast.error(`Error while updating ${category} `);
       console.log(error);
     }
   }
 
   return (
-    <div>
-      <dialog id="user_details_modal" className="modal">
+    <div >
+      <dialog id="user_details_modal" className="modal flex items-center justify-center mt-8 ">
         <div className="modal-box">
           <h3 className="font-bold text-lg">User Details!</h3>
           <p className="py-4">
