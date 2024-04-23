@@ -44,6 +44,12 @@ function HomeLayout({ children }) {
               <Link to="/dashboard">Dashboard</Link>
             </li>
 
+            {authState.role === "admin" && (
+              <li>
+                <Link to="/users">All Users</Link>
+              </li>
+            )}
+
             <li className="absolute bottom-8 w-5/6">
               <div className="w-full flex justify-center items-center bg-blue-500 hover:bg-indigo-400">
                 {!authState.isLoggedIn ? (

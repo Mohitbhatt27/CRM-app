@@ -113,6 +113,7 @@ function Dashboard() {
               pagination
               fixedHeader
               highlightOnHover
+              dense
             />
           )}
         </div>
