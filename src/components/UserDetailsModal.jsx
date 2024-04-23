@@ -6,17 +6,18 @@ import axiosInstance from "../config/axiosInstance";
 function UserDetailsModal({ user, resetTable }) {
   const [userDisplay, setUserDisplay] = useState(user);
 
-  async function handleStatusChange(e) {
+  async function handleUserChange(e) {
+    const { category, updatedValue } = e;
+
     toast("Updating the user....");
     try {
-      const userStatusSelected = e.target.value;
       const response = await axiosInstance.patch(
         "user/updateUser",
         {
           userId: userDisplay.id,
           updates: {
             ...userDisplay,
-            userStatus: userStatusSelected,
+            [category]: updatedValue,
           },
         },
         {
@@ -29,6 +30,7 @@ function UserDetailsModal({ user, resetTable }) {
         toast.success("User Status Updated!");
         const user = response?.data?.result;
         setUserDisplay({
+          ...userDisplay,
           name: user.name,
           email: user.email,
           userStatus: user.userStatus,
@@ -69,18 +71,48 @@ function UserDetailsModal({ user, resetTable }) {
               <span className="text-yellow-500"> {userDisplay.email}</span>
             </p>
           </p>
-          <select
-            className="select select-bordered w-full max-w-xs"
-            defaultValue="default"
-            onChange={handleStatusChange}
-          >
-            <option value="default" disabled>
-              Change user status
-            </option>
-            <option value="approved">Approved</option>
-            <option value="suspended">Suspended</option>
-            <option value="pending">Pending</option>
-          </select>
+
+          <span>
+            <select
+              className="select select-bordered w-1/2 max-w-xs"
+              defaultValue="default"
+              onChange={(e) => {
+                const selectedValue = e.target.value;
+                const customPayload = {
+                  category: "userStatus", // The fixed string
+                  updatedValue: selectedValue, // The selected value
+                };
+                handleUserChange(customPayload);
+              }}
+            >
+              <option value="default" disabled>
+                Change user status
+              </option>
+              <option value="approved">Approved</option>
+              <option value="suspended">Suspended</option>
+              <option value="pending">Pending</option>
+            </select>
+            <select
+              className="select select-bordered w-1/2 max-w-xs"
+              defaultValue="default"
+              onChange={(e) => {
+                const selectedValue = e.target.value;
+                const customPayload = {
+                  category: "userType",
+                  updatedValue: selectedValue,
+                };
+
+                handleUserChange(customPayload);
+              }}
+            >
+              <option value="default" disabled>
+                Change user type
+              </option>
+              <option value="customer">Customer</option>
+              <option value="engineer">Engineer</option>
+              <option value="admin">Admin</option>
+            </select>
+          </span>
           <div className="modal-action">
             <form method="dialog">
               <button className="btn">Close</button>
