@@ -32,7 +32,7 @@ function useTickets() {
 
   useEffect(() => {
     loadTickets();
-  }, [authState.token, searchParams.get("status")]);
+  }, [authState.token, searchParams.get("status"),ticketState.ticketDistribution]);
 
   return [ticketState];
 }
