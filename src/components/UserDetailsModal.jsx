@@ -7,17 +7,19 @@ function UserDetailsModal({ user, resetTable }) {
   const [userDisplay, setUserDisplay] = useState(user);
 
   async function handleUserChange(e) {
-    const { category, updatedValue } = e;
-
-    toast(`Updating ${category}... `);
     try {
+      const ul = e.target.parentNode.parentNode;
+      const name = ul.getAttribute("name");
+      const dropdown = document.getElementById(`${name}Dropdown`);
+      dropdown.open = !dropdown.open;
+      toast("Updating the user....");
       const response = await axiosInstance.patch(
         "user/updateUser",
         {
           userId: userDisplay.id,
           updates: {
             ...userDisplay,
-            [category]: updatedValue,
+            [name]: e.target.textContent,
           },
         },
         {
@@ -26,8 +28,9 @@ function UserDetailsModal({ user, resetTable }) {
           },
         }
       );
+
       if (response?.data?.result) {
-        toast.success(`Successfully updated ${category} `);
+        toast.success("Successfully updated the user");
         const user = response?.data?.result;
         setUserDisplay({
           ...userDisplay,
@@ -40,90 +43,75 @@ function UserDetailsModal({ user, resetTable }) {
         resetTable();
       }
     } catch (error) {
-      toast.error(`Error while updating ${category} `);
-      console.log(error);
+      toast.error("Something went wrong");
     }
   }
 
   return (
-    <div>
-      <dialog
-        id="user_details_modal"
-        className="modal flex items-center justify-center mt-8 "
-      >
-        <div className="modal-box">
-          <h3 className="font-bold text-lg">User Details!</h3>
-          <p className="py-4">
-            <p className="py-4">
-              Name: <span className="text-yellow-500"> {userDisplay.name}</span>
-            </p>
-            <p className="py-4">
-              Client Name:{" "}
-              <span className="text-yellow-500"> {userDisplay.clientName}</span>
-            </p>
-            <p className="py-4">
-              Status:{" "}
-              <span className="text-yellow-500"> {userDisplay.userStatus}</span>
-            </p>
-            <p className="py-4">
-              Type:{" "}
-              <span className="text-yellow-500"> {userDisplay.userType}</span>
-            </p>
-            <p className="py-4">
-              email:{" "}
-              <span className="text-yellow-500"> {userDisplay.email}</span>
-            </p>
-          </p>
-
-          <span>
-            <select
-              className="select select-bordered w-1/2 max-w-xs"
-              defaultValue="default"
-              onChange={(e) => {
-                const selectedValue = e.target.value;
-                const customPayload = {
-                  category: "userStatus", // The fixed string
-                  updatedValue: selectedValue, // The selected value
-                };
-                handleUserChange(customPayload);
-              }}
-            >
-              <option value="default" disabled>
-                Change user status
-              </option>
-              <option value="approved">Approved</option>
-              <option value="suspended">Suspended</option>
-              <option value="pending">Pending</option>
-            </select>
-            <select
-              className="select select-bordered w-1/2 max-w-xs"
-              defaultValue="default"
-              onChange={(e) => {
-                const selectedValue = e.target.value;
-                const customPayload = {
-                  category: "userType",
-                  updatedValue: selectedValue,
-                };
-
-                handleUserChange(customPayload);
-              }}
-            >
-              <option value="default" disabled>
-                Change user type
-              </option>
-              <option value="customer">Customer</option>
-              <option value="engineer">Engineer</option>
-              <option value="admin">Admin</option>
-            </select>
+    <dialog id="user_details_modal" className="modal">
+      <div className="modal-box text-lg font-semibold ">
+        <h3 className="font-bold text-lg">User Details</h3>
+        <p className="py-4">
+          Name: <span className="text-yellow-500"> {userDisplay.name}</span>
+        </p>
+        <p className="py-4">
+          Client Name:{" "}
+          <span className="text-yellow-500"> {userDisplay.clientName}</span>
+        </p>
+        <p className="py-4">
+          Status:
+          <span className="text-yellow-500">
+            <details className="dropdown ml-2" id="userStatusDropdown">
+              <summary className="m-1 btn">{userDisplay.userStatus}</summary>
+              <ul
+                name="userStatus"
+                onClick={handleUserChange}
+                className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <a>approved</a>
+                </li>
+                <li>
+                  <a>suspended</a>
+                </li>
+                <li>
+                  <a>rejected</a>
+                </li>
+              </ul>
+            </details>
           </span>
-          <div className="modal-action">
-            <form method="dialog">
-              <button className="btn">Close</button>
-            </form>
-          </div>
-        </div>
-      </dialog>
-    </div>
+        </p>
+        <p className="py-4">
+          Type:
+          <span className="text-yellow-500">
+            <details className="dropdown ml-2" id="userTypeDropdown">
+              <summary className="m-1 btn">{userDisplay.userType}</summary>
+              <ul
+                name="userType"
+                onClick={handleUserChange}
+                className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52"
+              >
+                <li>
+                  <a>customer</a>
+                </li>
+                <li>
+                  <a>admin</a>
+                </li>
+                <li>
+                  <a>engineer</a>
+                </li>
+              </ul>
+            </details>
+          </span>
+        </p>
+        <p className="py-4">
+          email: <span className="text-yellow-500"> {userDisplay.email}</span>
+        </p>
+      </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
   );
 }
 

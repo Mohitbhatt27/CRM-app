@@ -19,7 +19,6 @@ function TicketDetailsModal({ ticket }) {
     await dispatch(updateTicket(currentTicket));
     const modal = document.getElementById("ticket_modal");
     modal.close();
-    
   }
 
   return (

@@ -1,18 +1,17 @@
 import { useState } from "react";
-import DataTable, { createTheme } from "react-data-table-component";
-import { AiOutlineDownload } from "react-icons/ai";
-import { usePDF } from "react-to-pdf";
+import DataTable, { createTheme }  from "react-data-table-component";
 
 import TicketDetailsModal from "../components/TicketDetailsModal";
 import useTickets from "../hooks/useTickets";
-import HomeLayout from "../layouts/HomeLayout";
+import HomeLayout from "../layouts/Homelayout";
 const ExpandedComponent = ({ data }) => (
   <pre>{JSON.stringify(data, null, 2)}</pre>
 );
 function Dashboard() {
   const [ticketState] = useTickets();
+  
+
   const [selectedTicket, setSelectedTicket] = useState({});
-  const { toPDF, targetRef } = usePDF({ filename: "page.pdf" });
 
   const columns = [
     {
@@ -52,8 +51,8 @@ function Dashboard() {
       center: true,
     },
     {
-      name: "Assignee",
-      selector: (row) => row.assignee,
+      name: "Assigned To",
+      selector: (row) => row.assignedTo,
       reorder: true,
       sortable: true,
       center: true,
@@ -94,20 +93,24 @@ function Dashboard() {
     "dark"
   );
 
+  
+
   return (
     <HomeLayout>
-      <div className="min-h-[90vh] flex flex-col items-center justify-center gap-2">
-        <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
-          Tickets Records{" "}
-          <AiOutlineDownload
-            className="cursor-pointer inline "
-            onClick={() => toPDF()}
-          />
+      
+      <div className="min-h-[90vh] flex flex-col items-center justify-center">
+      <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
+          Tickets Records
         </div>
 
-        <div ref={targetRef}>
+
+        
           {ticketState && (
             <DataTable
+              onRowClicked={(row) => {
+                setSelectedTicket(row);
+                document.getElementById("ticket_modal").showModal();
+              }}
               columns={columns}
               data={ticketState.ticketList}
               expandableRows
@@ -119,19 +122,16 @@ function Dashboard() {
               dense
               responsive
               pointerOnHover
-              onRowClicked={(row) => {
-                setSelectedTicket(row);
-                document.getElementById("ticket_modal").showModal();
-              }}
             />
           )}
           <TicketDetailsModal
             ticket={selectedTicket}
             key={selectedTicket._id}
+            
           />
-        </div>
+       
       </div>
-    </HomeLayout>
+    </HomeLayout> 
   );
 }
 

@@ -3,12 +3,13 @@ import DataTable, { createTheme } from "react-data-table-component";
 
 import UserDetailsModal from "../../components/UserDetailsModal";
 import axiosInstance from "../../config/axiosInstance";
-import HomeLayout from "../../layouts/HomeLayout";
+import HomeLayout from "../../layouts/Homelayout";
 
-const ExpandedComponent = ({ data }) => (
-  <pre>{JSON.stringify(data, null, 2)}</pre>
-);
 function ListAllUsers() {
+  const ExpandedComponent = ({ data }) => (
+    <pre>{JSON.stringify(data, null, 2)}</pre>
+  );
+
   const columns = [
     {
       name: "User Id",
@@ -49,20 +50,6 @@ function ListAllUsers() {
     id: "",
   });
 
-  async function loadUsers() {
-    const response = await axiosInstance.get("/users", {
-      headers: {
-        "x-access-token": localStorage.getItem("token"),
-      },
-    });
-    console.log(response);
-    setUserList(response?.data?.result);
-  }
-
-  useEffect(() => {
-    loadUsers();
-  }, []);
-
   createTheme(
     "twilight",
     {
@@ -89,16 +76,28 @@ function ListAllUsers() {
     "dark"
   );
 
+  async function loadUsers() {
+    const response = await axiosInstance.get("/users", {
+      headers: {
+        "x-access-token": localStorage.getItem("token"),
+      },
+    });
+    console.log(response);
+    setUserList(response?.data?.result);
+  }
+
+  useEffect(() => {
+    loadUsers();
+  }, []);
+
   return (
     <HomeLayout>
-      <div className="min-h-[90vh] flex flex-col items-center justify-center gap-2">
-        <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
-          List of all users{" "}
+      <div className="min-h-[90vh] flex flex-col items-center justify-center">
+      <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
+          User List
         </div>
         {userList && (
           <DataTable
-            columns={columns}
-            data={userList}
             expandableRows
             expandableRowsComponent={ExpandedComponent}
             theme="twilight"
@@ -114,14 +113,16 @@ function ListAllUsers() {
             onRowClicked={(row) => {
               setUserDisplay({
                 name: row.name,
-                email: row.email,
-                userType: row.userType,
-                userStatus: row.userStatus,
                 clientName: row.clientName,
+                email: row.email,
+                userStatus: row.userStatus,
+                userType: row.userType,
                 id: row._id,
               });
               document.getElementById("user_details_modal").showModal();
             }}
+            columns={columns}
+            data={userList}
           />
         )}
         <UserDetailsModal
