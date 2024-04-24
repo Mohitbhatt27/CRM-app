@@ -19,14 +19,14 @@ function Dashboard() {
       name: "Ticket Id",
       selector: (row) => row._id,
       reorder: true,
-      grow: 2,
+      grow: 1,
       sortable: true,
     },
     {
       name: "Title",
       selector: (row) => row.title,
       reorder: true,
-      grow: 0.75,
+      grow: 1.25,
       sortable: true,
     },
     {
@@ -117,6 +117,7 @@ function Dashboard() {
               fixedHeader
               highlightOnHover
               dense
+              responsive
               pointerOnHover
               onRowClicked={(row) => {
                 setSelectedTicket(row);

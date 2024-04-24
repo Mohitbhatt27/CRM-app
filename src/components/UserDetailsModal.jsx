@@ -46,8 +46,11 @@ function UserDetailsModal({ user, resetTable }) {
   }
 
   return (
-    <div >
-      <dialog id="user_details_modal" className="modal flex items-center justify-center mt-8 ">
+    <div>
+      <dialog
+        id="user_details_modal"
+        className="modal flex items-center justify-center mt-8 "
+      >
         <div className="modal-box">
           <h3 className="font-bold text-lg">User Details!</h3>
           <p className="py-4">
