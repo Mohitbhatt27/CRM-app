@@ -1,5 +1,5 @@
 import { useState } from "react";
-import DataTable, { createTheme }  from "react-data-table-component";
+import DataTable, { createTheme } from "react-data-table-component";
 
 import TicketDetailsModal from "../components/TicketDetailsModal";
 import useTickets from "../hooks/useTickets";
@@ -9,7 +9,6 @@ const ExpandedComponent = ({ data }) => (
 );
 function Dashboard() {
   const [ticketState] = useTickets();
-  
 
   const [selectedTicket, setSelectedTicket] = useState({});
 
@@ -93,45 +92,35 @@ function Dashboard() {
     "dark"
   );
 
-  
-
   return (
     <HomeLayout>
-      
       <div className="min-h-[90vh] flex flex-col items-center justify-center">
-      <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
+        <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
           Tickets Records
         </div>
 
-
-        
-          {ticketState && (
-            <DataTable
-              onRowClicked={(row) => {
-                setSelectedTicket(row);
-                document.getElementById("ticket_modal").showModal();
-              }}
-              columns={columns}
-              data={ticketState.ticketList}
-              expandableRows
-              expandableRowsComponent={ExpandedComponent}
-              theme="twilight"
-              pagination
-              fixedHeader
-              highlightOnHover
-              dense
-              responsive
-              pointerOnHover
-            />
-          )}
-          <TicketDetailsModal
-            ticket={selectedTicket}
-            key={selectedTicket._id}
-            
+        {ticketState && (
+          <DataTable
+            onRowClicked={(row) => {
+              setSelectedTicket(row);
+              document.getElementById("ticket_modal").showModal();
+            }}
+            columns={columns}
+            data={ticketState.ticketList}
+            expandableRows
+            expandableRowsComponent={ExpandedComponent}
+            theme="twilight"
+            pagination
+            fixedHeader
+            highlightOnHover
+            dense
+            responsive
+            pointerOnHover
           />
-       
+        )}
+        <TicketDetailsModal ticket={selectedTicket} key={selectedTicket._id} />
       </div>
-    </HomeLayout> 
+    </HomeLayout>
   );
 }
 
