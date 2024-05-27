@@ -3,7 +3,7 @@ import DataTable, { createTheme } from "react-data-table-component";
 
 import UserDetailsModal from "../../components/UserDetailsModal";
 import axiosInstance from "../../config/axiosInstance";
-import HomeLayout from "../../layouts/Homelayout";
+import HomeLayout from "../../layouts/HomeLayout";
 
 function ListAllUsers() {
   const ExpandedComponent = ({ data }) => (
@@ -93,7 +93,7 @@ function ListAllUsers() {
   return (
     <HomeLayout>
       <div className="min-h-[90vh] flex flex-col items-center justify-center">
-      <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
+        <div className="bg-yellow-500 w-full text-black text-center text-3xl py-4 font-bold hover:bg-yellow-400 transition-all ease-in-out duration-300">
           User List
         </div>
         {userList && (

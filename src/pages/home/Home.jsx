@@ -6,7 +6,7 @@ import { TbProgressBolt } from "react-icons/tb";
 import Card from "../../components/Card";
 import useCharts from "../../hooks/useCharts";
 import useTickets from "../../hooks/useTickets";
-import HomeLayout from "../../layouts/Homelayout";
+import HomeLayout from "../../layouts/HomeLayout";
 
 function Home() {
   const [ticketsState] = useTickets();

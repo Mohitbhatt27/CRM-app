@@ -60,7 +60,7 @@ export const getAllTicketsforTheUser = createAsyncThunk(
   "tickets/getAllTicketsforTheUser",
   async () => {
     try {
-      const response = axiosInstance.get("getMyAssignedTickets", {
+      const response = axiosInstance.get("assignedTickets", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },

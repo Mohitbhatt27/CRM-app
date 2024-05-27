@@ -3,7 +3,7 @@ import DataTable, { createTheme } from "react-data-table-component";
 
 import TicketDetailsModal from "../components/TicketDetailsModal";
 import useTickets from "../hooks/useTickets";
-import HomeLayout from "../layouts/Homelayout";
+import HomeLayout from "../layouts/HomeLayout";
 const ExpandedComponent = ({ data }) => (
   <pre>{JSON.stringify(data, null, 2)}</pre>
 );
