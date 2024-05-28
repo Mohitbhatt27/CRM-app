@@ -10,8 +10,8 @@ const ExpandedComponent = ({ data }) => (
 );
 function Dashboard() {
   const [ticketState] = useTickets();
+  console.log("ticketstse", ticketState);
   const role = useSelector((state) => state.auth.role);
-  console.log("check check", role);
 
   const [selectedTicket, setSelectedTicket] = useState({});
 
@@ -97,6 +97,7 @@ function Dashboard() {
           Tickets Records
         </div>
 
+        <div className="w-full flex justify-center items-center"></div>
         {ticketState && (
           <DataTable
             onRowClicked={(row) => {

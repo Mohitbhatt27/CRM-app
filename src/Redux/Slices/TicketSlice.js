@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
 
 import axiosInstance from "../../config/axiosInstance";
@@ -133,12 +133,14 @@ const ticketSlice = createSlice({
   reducers: {
     filterTickets: (state, action) => {
       let status = action.payload.status.toUpperCase();
-      console.log("downloadedTickets length", state.downloadedTickets.length);
-      console.log("tickets", [...state.downloadedTickets]);
+      console.log("downloadedTickets length", current(state));
+      console.log("status", status);
 
-      state.ticketList = state.downloadedTickets.filter(
+      state.ticketList = current(state).downloadedTickets.filter(
         (ticket) => ticket.status === status
       );
+
+      console.log(state.ticketList);
     },
     resetTicketList: (state) => {
       state.ticketList = state.downloadedTickets;
@@ -205,9 +207,12 @@ const ticketSlice = createSlice({
       .addCase(createTicket.fulfilled, (state, action) => {
         if (action?.payload?.data == undefined) return;
         const newTicket = action.payload.data;
-        state.downloadedTickets.push(newTicket);
 
-        state.ticketList = state.downloadedTickets;
+        console.log("newTicket", newTicket);
+        state.downloadedTickets = [...state.downloadedTickets, newTicket.data];
+
+        state.ticketList = [...state.downloadedTickets];
+
         state.ticketDistribution = {
           OPEN: 0,
           IN_PROGRESS: 0,
@@ -215,9 +220,9 @@ const ticketSlice = createSlice({
           ON_HOLD: 0,
           CANCELLED: 0,
         };
+
         state.downloadedTickets.forEach((ticket) => {
-          state.ticketDistribution[ticket.status] =
-            state.ticketDistribution[ticket.status] + 1;
+          state.ticketDistribution[ticket.status] += 1;
         });
       })
       .addCase(getAllTicketsForAdmin.fulfilled, (state, action) => {
