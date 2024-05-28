@@ -18,7 +18,6 @@ function useTickets() {
   const dispatch = useDispatch();
 
   const loadTickets = useCallback(async () => {
-    console.log("once");
     if (authState.role === "CUSTOMER") {
       await dispatch(getAllCreatedTicketsforTheUser());
     } else if (authState.role === "ADMIN") {

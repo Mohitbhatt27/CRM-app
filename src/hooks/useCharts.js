@@ -25,7 +25,7 @@ ChartJS.register(
   BarElement
 );
 
-import { compareAsc, format } from "date-fns";
+import { add, compareAsc, format } from "date-fns";
 
 function useCharts() {
   const [ticketsState] = useTickets();
@@ -58,36 +58,37 @@ function useCharts() {
 
   const lineChartData = {
     labels: Object.keys(ticketsChartData.openTickets),
-    fontColor: "white",
+    fontColor: "pink",
+
     datasets: [
       {
         label: "Open Tickets data",
         data: Object.values(ticketsChartData.openTickets),
-        borderColor: "rgb(255, 99, 132)",
+        borderColor: "#0f1729",
         borderWidth: 3,
       },
       {
         label: "In Progress Tickets data",
         data: Object.values(ticketsChartData.inProgressTickets),
-        borderColor: "rgb(53, 162, 235)",
+        borderColor: "#fdba74",
         borderWidth: 4,
       },
       {
         label: "Resolved Tickets data",
         data: Object.values(ticketsChartData.resolvedTickets),
-        borderColor: "rgb(245, 205, 95)",
+        borderColor: "#d8b4fe",
         borderWidth: 5,
       },
       {
         label: "On Hold Tickets data",
         data: Object.values(ticketsChartData.onHoldTickets),
-        borderColor: "rgb(191, 44, 88)",
+        borderColor: "#d1d5db",
         borderWidth: 2,
       },
       {
         label: "Cancelled Tickets data",
         data: Object.values(ticketsChartData.cancelledTickets),
-        borderColor: "rgb(119 145, 77)",
+        borderColor: "#93c5fd",
         borderWidth: 1,
       },
     ],
@@ -138,17 +139,11 @@ function useCharts() {
   };
 
   const processTickets = useCallback(() => {
-    // Fetch the current Date
     let currentDate = new Date();
-    // Calculate the 10th date from today
-    let tenthDayFromToday = new Date();
-    tenthDayFromToday.setDate(currentDate.getDate() - 10);
 
-    tenthDayFromToday = format(tenthDayFromToday, "dd-MM-yy");
+    let tenthDayFromToday = add(currentDate, { days: -10 });
 
-    // Process all the tickets
     if (ticketsState.ticketList.length > 0) {
-      // Prepare two localobjects to act as frequency map
       let openTicketsData = {};
       let inProgressTicketsData = {};
       let resolvedTicketsData = {};
@@ -239,36 +234,27 @@ function useCharts() {
 
       // Process all the tickets one by one
       ticketsState.ticketList.forEach((ticket) => {
-        const ticketDate = format(ticket.createdAt, "dd-MM-yy");
+        const ticketDate = ticket.createdAt;
+        const formattedTicketDate = format(new Date(ticketDate), "dd-MM-yy");
 
-        // If ticket is open and lies in the last 10 days add it
-        if (
-          ticket.status == "OPEN" &&
-          compareAsc(ticketDate, tenthDayFromToday) >= 0
-        ) {
-          openTicketsData[ticketDate] = openTicketsData[ticketDate] + 1;
-        }
+        const isFromLastTenDays =
+          compareAsc(new Date(ticketDate), new Date(tenthDayFromToday)) >= 0;
 
-        // If ticket is inProgress and lies in the last 10 days add it
-        if (ticket.status == "IN_PROGRESS" && ticketDate >= tenthDayFromToday) {
-          inProgressTicketsData[ticketDate] =
-            inProgressTicketsData[ticketDate] + 1;
-        }
-
-        // If ticket is resolved and lies in the last 10 days add it
-        if (ticket.status == "RESOLVED" && ticketDate >= tenthDayFromToday) {
-          resolvedTicketsData[ticketDate] = resolvedTicketsData[ticketDate] + 1;
-        }
-
-        // If ticket is onHold and lies in the last 10 days add it
-        if (ticket.status == "ON_HOLD" && ticketDate >= tenthDayFromToday) {
-          onHoldTicketsData[ticketDate] = onHoldTicketsData[ticketDate] + 1;
-        }
-
-        // If ticket is cancelled and lies in the last 10 days add it
-        if (ticket.status == "CANCELLED" && ticketDate >= tenthDayFromToday) {
-          cancelledTicketsData[ticketDate] =
-            cancelledTicketsData[ticketDate] + 1;
+        if (ticket.status == "OPEN" && isFromLastTenDays) {
+          openTicketsData[formattedTicketDate] =
+            openTicketsData[formattedTicketDate] + 1;
+        } else if (ticket.status == "IN_PROGRESS" && isFromLastTenDays) {
+          inProgressTicketsData[formattedTicketDate] =
+            inProgressTicketsData[formattedTicketDate] + 1;
+        } else if (ticket.status == "RESOLVED" && isFromLastTenDays) {
+          resolvedTicketsData[formattedTicketDate] =
+            resolvedTicketsData[formattedTicketDate] + 1;
+        } else if (ticket.status == "ON_HOLD" && isFromLastTenDays) {
+          onHoldTicketsData[formattedTicketDate] =
+            onHoldTicketsData[formattedTicketDate] + 1;
+        } else if (ticket.status == "CANCELLED" && isFromLastTenDays) {
+          cancelledTicketsData[formattedTicketDate] =
+            cancelledTicketsData[formattedTicketDate] + 1;
         }
 
         // month wise data
