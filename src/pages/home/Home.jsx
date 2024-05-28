@@ -88,6 +88,7 @@ function Home() {
           </Card>
         </div>
       )}
+
       <div className="mt-10 flex justify-center items-center gap-10">
         <div className="w-80 h-80 ">
           <Pie data={pieChartData} />

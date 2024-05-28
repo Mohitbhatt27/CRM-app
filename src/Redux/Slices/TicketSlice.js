@@ -45,13 +45,14 @@ export const getAllCreatedTicketsforTheUser = createAsyncThunk(
         },
       });
       toast.promise(response, {
-        success: "Yo Ti Successfully loaded all the tickets",
+        success: "Successfully loaded all the tickets",
         loading: "Fetching tickets belonging to you",
         error: "Something went wrong",
       });
       return await response;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );

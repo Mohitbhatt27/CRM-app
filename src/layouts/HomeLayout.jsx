@@ -34,6 +34,7 @@ function HomeLayout({ children }) {
         </div>
         <div className="drawer-side z-40">
           <label htmlFor="my-drawer" className="drawer-overlay"></label>
+
           <ul className="menu p-4 w-60 min-h-full bg-base-100 text-base-content">
             <li>
               <Link to="/">Home</Link>

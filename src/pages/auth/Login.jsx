@@ -31,8 +31,6 @@ function Login() {
       return;
     }
 
-    console.log("calling login", loginDetails);
-
     const response = await dispatch(login(loginDetails));
     console.log(response);
     if (response.payload) {
@@ -89,7 +87,7 @@ function Login() {
               value={loginDetails.password}
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
-                  onSubmit(); 
+                  onSubmit();
                 }
               }}
             />

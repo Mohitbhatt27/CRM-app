@@ -2,6 +2,7 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
+import { logout } from "../Redux/Slices/AuthSlice";
 import {
   filterTickets,
   getAllCreatedTicketsforTheUser,
@@ -19,11 +20,20 @@ function useTickets() {
 
   const loadTickets = useCallback(async () => {
     if (authState.role === "CUSTOMER") {
-      await dispatch(getAllCreatedTicketsforTheUser());
+      const response = await dispatch(getAllCreatedTicketsforTheUser());
+      if (response.error) {
+        await dispatch(logout());
+      }
     } else if (authState.role === "ADMIN") {
-      await dispatch(getAllTicketsForAdmin());
-    } else {
-      await dispatch(getAllTicketsforEngineer());
+      const response = await dispatch(getAllTicketsForAdmin());
+      if (response.error) {
+        await dispatch(logout());
+      }
+    } else if (authState.role === "ENGINEER") {
+      const response = await dispatch(getAllTicketsforEngineer());
+      if (response.error) {
+        await dispatch(logout());
+      }
     }
 
     if (searchParams.get("status")) {
