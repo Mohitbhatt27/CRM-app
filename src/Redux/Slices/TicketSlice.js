@@ -133,6 +133,8 @@ const ticketSlice = createSlice({
   reducers: {
     filterTickets: (state, action) => {
       let status = action.payload.status.toUpperCase();
+      if (status === "ON HOLD") status = "ON_HOLD";
+      if (status === "IN PROGRESS") status = "IN_PROGRESS";
 
       const filteredTickets = current(state).downloadedTickets.filter(
         (ticket) => ticket.status === status

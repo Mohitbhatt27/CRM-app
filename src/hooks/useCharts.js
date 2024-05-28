@@ -113,27 +113,27 @@ function useCharts() {
       {
         label: "Open",
         data: Object.values(ticketsChartData.openTicketsByMonth),
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
+        backgroundColor: "#0f1729",
       },
       {
         label: "In Progress",
         data: Object.values(ticketsChartData.inProgressTicketsByMonth),
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
+        backgroundColor: "#fdba74",
       },
       {
         label: "Resolved",
         data: Object.values(ticketsChartData.resolvedTicketsByMonth),
-        backgroundColor: "rgba(53, 100, 235, 0.5)",
+        backgroundColor: "#d8b4fe",
       },
       {
         label: "On Hold",
         data: Object.values(ticketsChartData.onHoldTicketsByMonth),
-        backgroundColor: "rgba(53, 200, 235, 0.5)",
+        backgroundColor: "#d1d5db",
       },
       {
         label: "Cancelled",
         data: Object.values(ticketsChartData.cancelledTicketsByMonth),
-        backgroundColor: "rgba(53, 300, 235, 0.5)",
+        backgroundColor: "#93c5fd",
       },
     ],
   };
@@ -258,7 +258,7 @@ function useCharts() {
         }
 
         // month wise data
-        let month = ticketDate.toLocaleString("default", { month: "long" });
+        let month = format(new Date(ticketDate), "MMMM");
         if (ticket.status == "OPEN") {
           openTicketsByMonth[month] += 1;
         }
