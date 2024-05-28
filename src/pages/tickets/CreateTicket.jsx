@@ -1,22 +1,18 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import useTickets from "../../hooks/useTickets";
 import HomeLayout from "../../layouts/HomeLayout";
 import { createTicket } from "../../Redux/Slices/TicketSlice";
 
 function CreateTicket() {
-  const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   useTickets();
 
   const [ticket, setTicket] = useState({
     title: "",
     description: "",
-    ticketPriority: 3,
-    status: "open",
-    clientName: auth.data.clientName,
   });
 
   function handleFormChange(e) {
@@ -33,15 +29,12 @@ function CreateTicket() {
       toast.error("Title and description are mandatory");
       return;
     }
-    const response = await dispatch(createTicket(ticket));
+    const response = dispatch(createTicket(ticket));
     if (response?.payload?.status == 201) {
       // ticket got created successfully
       setTicket({
         title: "",
         description: "",
-        ticketPriority: 3,
-        status: "open",
-        clientName: auth.data.clientName,
       });
     }
   }

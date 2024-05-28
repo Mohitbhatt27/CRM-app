@@ -6,7 +6,7 @@ import {
   filterTickets,
   getAllCreatedTicketsforTheUser,
   getAllTicketsForAdmin,
-  getAllTicketsforTheUser,
+  getAllTicketsforEngineer,
   resetTicketList,
 } from "../Redux/Slices/TicketSlice";
 
@@ -18,21 +18,17 @@ function useTickets() {
   const dispatch = useDispatch();
 
   async function loadTickets() {
-    // if (ticketState.downloadedTickets.length == 0) {
-    if (authState.role === "customer") {
-      console.log("customer");
-      await dispatch(getAllCreatedTicketsforTheUser());
-    } else if (authState.role === "admin") {
-      console.log("admin");
-      await dispatch(getAllTicketsForAdmin());
+    if (authState.role === "CUSTOMER") {
+      dispatch(getAllCreatedTicketsforTheUser());
+    } else if (authState.role === "ADMIN") {
+      dispatch(getAllTicketsForAdmin());
     } else {
-      console.log("engineer");
-      await dispatch(getAllTicketsforTheUser());
+      dispatch(getAllTicketsforEngineer());
     }
 
     if (searchParams.get("status")) {
       // dispatch a filter action
-      console.log(searchParams.get("status"));
+
       dispatch(filterTickets({ status: searchParams.get("status") }));
     } else {
       dispatch(resetTicketList());

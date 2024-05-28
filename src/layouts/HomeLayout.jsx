@@ -10,7 +10,6 @@ function HomeLayout({ children }) {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log("authstate", authState);
 
   function onLogout() {
     dispatch(logout());

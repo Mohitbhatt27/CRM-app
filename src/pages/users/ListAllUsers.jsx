@@ -13,7 +13,7 @@ function ListAllUsers() {
   const columns = [
     {
       name: "User Id",
-      selector: (row) => row._id,
+      selector: (row) => row.id,
       reorder: true,
     },
     {
@@ -117,7 +117,7 @@ function ListAllUsers() {
                 email: row.email,
                 userStatus: row.userStatus,
                 userType: row.userType,
-                id: row._id,
+                id: row.id,
               });
               document.getElementById("user_details_modal").showModal();
             }}

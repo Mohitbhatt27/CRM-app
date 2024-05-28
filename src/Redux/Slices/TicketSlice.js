@@ -7,18 +7,18 @@ const initialState = {
   downloadedTickets: [],
   ticketList: [],
   ticketDistribution: {
-    open: 0,
-    inProgress: 0,
-    resolved: 0,
-    onHold: 0,
-    cancelled: 0,
+    OPEN: 0,
+    IN_PROGRESS: 0,
+    RESOLVED: 0,
+    ON_HOLD: 0,
+    CANCELLED: 0,
   },
 };
 export const getAllTicketsForAdmin = createAsyncThunk(
   "tickets/getAllTicketsForAdmin",
   async () => {
     try {
-      const response = axiosInstance.get("ticket", {
+      const response = axiosInstance.get("tickets/allTickets", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
@@ -39,7 +39,7 @@ export const getAllCreatedTicketsforTheUser = createAsyncThunk(
   "tickets/getMyCreatedTickets",
   async () => {
     try {
-      const response = axiosInstance.get("getMyCreatedTickets", {
+      const response = axiosInstance.get("tickets/createdTickets", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
@@ -56,11 +56,11 @@ export const getAllCreatedTicketsforTheUser = createAsyncThunk(
   }
 );
 
-export const getAllTicketsforTheUser = createAsyncThunk(
-  "tickets/getAllTicketsforTheUser",
+export const getAllTicketsforEngineer = createAsyncThunk(
+  "tickets/getAllTicketsforEngineer",
   async () => {
     try {
-      const response = axiosInstance.get("assignedTickets", {
+      const response = axiosInstance.get("tickets/assignedTickets", {
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
@@ -82,7 +82,7 @@ export const createTicket = createAsyncThunk(
   async (ticket) => {
     try {
       const response = axiosInstance.post(
-        `ticket`,
+        `tickets/create`,
         ticket, // req body
         {
           headers: {
@@ -107,7 +107,7 @@ export const updateTicket = createAsyncThunk(
   async (ticket) => {
     try {
       const response = axiosInstance.patch(
-        `ticket/${ticket._id}`,
+        `tickets/update/${ticket.id}`,
         ticket, // req body
         {
           headers: {
@@ -132,10 +132,10 @@ const ticketSlice = createSlice({
   initialState,
   reducers: {
     filterTickets: (state, action) => {
-      console.log(action.payload);
-      let status = action.payload.status.toLowerCase();
-      if (status == "in progress") status = "inProgress";
-      if (status == "on hold") status = "onHold";
+      let status = action.payload.status.toUpperCase();
+      console.log("downloadedTickets length", state.downloadedTickets.length);
+      console.log("tickets", [...state.downloadedTickets]);
+
       state.ticketList = state.downloadedTickets.filter(
         (ticket) => ticket.status === status
       );
@@ -148,32 +148,32 @@ const ticketSlice = createSlice({
     builder
       .addCase(getAllCreatedTicketsforTheUser.fulfilled, (state, action) => {
         if (!action?.payload?.data) return;
-        state.ticketList = action?.payload?.data?.result;
-        state.downloadedTickets = action?.payload?.data?.result;
-        const tickets = action?.payload?.data?.result;
+        state.ticketList = action?.payload?.data?.data;
+        state.downloadedTickets = action?.payload?.data?.data;
+        const tickets = action?.payload?.data?.data;
         state.ticketDistribution = {
-          open: 0,
-          inProgress: 0,
-          resolved: 0,
-          onHold: 0,
-          cancelled: 0,
+          OPEN: 0,
+          IN_PROGRESS: 0,
+          RESOLVED: 0,
+          ON_HOLD: 0,
+          CANCELLED: 0,
         };
         tickets.forEach((ticket) => {
           state.ticketDistribution[ticket.status] =
             state.ticketDistribution[ticket.status] + 1;
         });
       })
-      .addCase(getAllTicketsforTheUser.fulfilled, (state, action) => {
+      .addCase(getAllTicketsforEngineer.fulfilled, (state, action) => {
         if (!action?.payload?.data) return;
         state.ticketList = action?.payload?.data?.result;
         state.downloadedTickets = action?.payload?.data?.result;
         const tickets = action?.payload?.data?.result;
         state.ticketDistribution = {
-          open: 0,
-          inProgress: 0,
-          resolved: 0,
-          onHold: 0,
-          cancelled: 0,
+          OPEN: 0,
+          IN_PROGRESS: 0,
+          RESOLVED: 0,
+          ON_HOLD: 0,
+          CANCELLED: 0,
         };
         tickets.forEach((ticket) => {
           state.ticketDistribution[ticket.status] =
@@ -183,19 +183,19 @@ const ticketSlice = createSlice({
       .addCase(updateTicket.fulfilled, (state, action) => {
         const updatedTicket = action.payload.data.result;
         state.ticketList = state.ticketList.map((ticket) => {
-          if (ticket._id == updatedTicket._id) return updatedTicket;
+          if (ticket.id == updatedTicket.id) return updatedTicket;
           return ticket;
         });
         state.downloadedTickets = state.downloadedTickets.map((ticket) => {
-          if (ticket._id == updatedTicket._id) return updatedTicket;
+          if (ticket.id == updatedTicket.id) return updatedTicket;
           return ticket;
         });
         state.ticketDistribution = {
-          open: 0,
-          inProgress: 0,
-          resolved: 0,
-          onHold: 0,
-          cancelled: 0,
+          OPEN: 0,
+          IN_PROGRESS: 0,
+          RESOLVED: 0,
+          ON_HOLD: 0,
+          CANCELLED: 0,
         };
         state.downloadedTickets.forEach((ticket) => {
           state.ticketDistribution[ticket.status] =
@@ -206,13 +206,14 @@ const ticketSlice = createSlice({
         if (action?.payload?.data == undefined) return;
         const newTicket = action.payload.data;
         state.downloadedTickets.push(newTicket);
+
         state.ticketList = state.downloadedTickets;
         state.ticketDistribution = {
-          open: 0,
-          inProgress: 0,
-          resolved: 0,
-          onHold: 0,
-          cancelled: 0,
+          OPEN: 0,
+          IN_PROGRESS: 0,
+          RESOLVED: 0,
+          ON_HOLD: 0,
+          CANCELLED: 0,
         };
         state.downloadedTickets.forEach((ticket) => {
           state.ticketDistribution[ticket.status] =
@@ -225,11 +226,11 @@ const ticketSlice = createSlice({
         state.downloadedTickets = action?.payload?.data?.result;
         const tickets = action?.payload?.data?.result;
         state.ticketDistribution = {
-          open: 0,
-          inProgress: 0,
-          resolved: 0,
-          onHold: 0,
-          cancelled: 0,
+          OPEN: 0,
+          IN_PROGRESS: 0,
+          RESOLVED: 0,
+          ON_HOLD: 0,
+          CANCELLED: 0,
         };
         tickets.forEach((ticket) => {
           state.ticketDistribution[ticket.status] =

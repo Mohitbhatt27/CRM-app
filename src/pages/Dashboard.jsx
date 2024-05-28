@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DataTable, { createTheme } from "react-data-table-component";
+import { useSelector } from "react-redux";
 
 import TicketDetailsModal from "../components/TicketDetailsModal";
 import useTickets from "../hooks/useTickets";
@@ -9,15 +10,17 @@ const ExpandedComponent = ({ data }) => (
 );
 function Dashboard() {
   const [ticketState] = useTickets();
+  const role = useSelector((state) => state.auth.role);
+  console.log("check check", role);
 
   const [selectedTicket, setSelectedTicket] = useState({});
 
   const columns = [
     {
       name: "Ticket Id",
-      selector: (row) => row._id,
+      selector: (row) => row.id,
       reorder: true,
-      grow: 1,
+      grow: 1.5,
       sortable: true,
     },
     {
@@ -26,12 +29,13 @@ function Dashboard() {
       reorder: true,
       grow: 1.25,
       sortable: true,
+      center: true,
     },
     {
       name: "Description",
       selector: (row) => row.description,
       reorder: true,
-      grow: 2,
+      grow: 1.5,
       sortable: true,
     },
     {
@@ -47,13 +51,7 @@ function Dashboard() {
       reorder: true,
       sortable: true,
       grow: 0.5,
-      center: true,
-    },
-    {
-      name: "Assigned To",
-      selector: (row) => row.assignedTo,
-      reorder: true,
-      sortable: true,
+
       center: true,
     },
 
@@ -118,7 +116,9 @@ function Dashboard() {
             pointerOnHover
           />
         )}
-        <TicketDetailsModal ticket={selectedTicket} key={selectedTicket._id} />
+        {role != "CUSTOMER" && (
+          <TicketDetailsModal ticket={selectedTicket} key={selectedTicket.id} />
+        )}
       </div>
     </HomeLayout>
   );

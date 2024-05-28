@@ -19,10 +19,10 @@ function Home() {
           <Card
             titleText="Open"
             status={
-              ticketsState.ticketDistribution.open /
+              ticketsState.ticketDistribution.OPEN /
               ticketsState.downloadedTickets.length
             }
-            quantity={ticketsState.ticketDistribution.open}
+            quantity={ticketsState.ticketDistribution.OPEN}
             background="bg-yellow-300"
             borderColor="border-green-300"
             fontColor="text-black"
@@ -33,10 +33,10 @@ function Home() {
           <Card
             titleText="In Progress"
             status={
-              ticketsState.ticketDistribution.inProgress /
+              ticketsState.ticketDistribution.IN_PROGRESS /
               ticketsState.downloadedTickets.length
             }
-            quantity={ticketsState.ticketDistribution.inProgress}
+            quantity={ticketsState.ticketDistribution.IN_PROGRESS}
             background="bg-orange-300"
             borderColor="border-red-300"
             fontColor="text-black"
@@ -47,10 +47,10 @@ function Home() {
           <Card
             titleText="Resolved"
             status={
-              ticketsState.ticketDistribution.resolved /
+              ticketsState.ticketDistribution.RESOLVED /
               ticketsState.downloadedTickets.length
             }
-            quantity={ticketsState.ticketDistribution.resolved}
+            quantity={ticketsState.ticketDistribution.RESOLVED}
             background="bg-purple-300"
             borderColor="border-blue-700"
             fontColor="text-black"
@@ -61,10 +61,10 @@ function Home() {
           <Card
             titleText="On Hold"
             status={
-              ticketsState.ticketDistribution.onHold /
+              ticketsState.ticketDistribution.ON_HOLD /
               ticketsState.downloadedTickets.length
             }
-            quantity={ticketsState.ticketDistribution.onHold}
+            quantity={ticketsState.ticketDistribution.ON_HOLD}
             background="bg-gray-300"
             borderColor="border-gray-800"
             fontColor="text-black"
@@ -75,10 +75,10 @@ function Home() {
           <Card
             titleText="Cancelled"
             status={
-              ticketsState.ticketDistribution.cancelled /
+              ticketsState.ticketDistribution.CANCELLED /
               ticketsState.downloadedTickets.length
             }
-            quantity={ticketsState.ticketDistribution.cancelled}
+            quantity={ticketsState.ticketDistribution.CANCELLED}
             background="bg-blue-300"
             borderColor="border-violet-300"
             fontColor="text-black"
