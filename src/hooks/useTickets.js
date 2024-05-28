@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 
@@ -17,13 +17,14 @@ function useTickets() {
 
   const dispatch = useDispatch();
 
-  async function loadTickets() {
+  const loadTickets = useCallback(async () => {
+    console.log("once");
     if (authState.role === "CUSTOMER") {
-      dispatch(getAllCreatedTicketsforTheUser());
+      await dispatch(getAllCreatedTicketsforTheUser());
     } else if (authState.role === "ADMIN") {
-      dispatch(getAllTicketsForAdmin());
+      await dispatch(getAllTicketsForAdmin());
     } else {
-      dispatch(getAllTicketsforEngineer());
+      await dispatch(getAllTicketsforEngineer());
     }
 
     if (searchParams.get("status")) {
@@ -33,11 +34,11 @@ function useTickets() {
     } else {
       dispatch(resetTicketList());
     }
-  }
+  }, [authState.role, searchParams, dispatch]);
 
   useEffect(() => {
     loadTickets();
-  }, [authState.token, searchParams.get("status")]);
+  }, [authState.token, searchParams, loadTickets]);
 
   return [ticketState];
 }

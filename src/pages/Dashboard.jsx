@@ -10,7 +10,6 @@ const ExpandedComponent = ({ data }) => (
 );
 function Dashboard() {
   const [ticketState] = useTickets();
-  console.log("ticketstse", ticketState);
   const role = useSelector((state) => state.auth.role);
 
   const [selectedTicket, setSelectedTicket] = useState({});

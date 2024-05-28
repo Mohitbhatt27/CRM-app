@@ -29,7 +29,8 @@ function CreateTicket() {
       toast.error("Title and description are mandatory");
       return;
     }
-    const response = dispatch(createTicket(ticket));
+    const response = await dispatch(createTicket(ticket));
+    console.log(response);
     if (response?.payload?.status == 201) {
       // ticket got created successfully
       setTicket({

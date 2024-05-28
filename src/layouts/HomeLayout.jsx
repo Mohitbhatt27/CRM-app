@@ -18,7 +18,7 @@ function HomeLayout({ children }) {
 
   useEffect(() => {
     if (!authState.isLoggedIn) navigate("/login");
-  }, []);
+  }, [authState.isLoggedIn, navigate]);
 
   return (
     <div className="min-h-[90vh]">

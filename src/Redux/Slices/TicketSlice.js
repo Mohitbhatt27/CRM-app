@@ -45,7 +45,7 @@ export const getAllCreatedTicketsforTheUser = createAsyncThunk(
         },
       });
       toast.promise(response, {
-        success: "Successfully loaded all the tickets",
+        success: "Yo Ti Successfully loaded all the tickets",
         loading: "Fetching tickets belonging to you",
         error: "Something went wrong",
       });
@@ -133,14 +133,12 @@ const ticketSlice = createSlice({
   reducers: {
     filterTickets: (state, action) => {
       let status = action.payload.status.toUpperCase();
-      console.log("downloadedTickets length", current(state));
-      console.log("status", status);
 
-      state.ticketList = current(state).downloadedTickets.filter(
+      const filteredTickets = current(state).downloadedTickets.filter(
         (ticket) => ticket.status === status
       );
 
-      console.log(state.ticketList);
+      state.ticketList = filteredTickets;
     },
     resetTicketList: (state) => {
       state.ticketList = state.downloadedTickets;
@@ -208,7 +206,6 @@ const ticketSlice = createSlice({
         if (action?.payload?.data == undefined) return;
         const newTicket = action.payload.data;
 
-        console.log("newTicket", newTicket);
         state.downloadedTickets = [...state.downloadedTickets, newTicket.data];
 
         state.ticketList = [...state.downloadedTickets];
