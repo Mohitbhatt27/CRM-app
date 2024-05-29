@@ -31,6 +31,7 @@ export const getAllTicketsForAdmin = createAsyncThunk(
       return await response;
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 );
@@ -109,7 +110,11 @@ export const updateTicket = createAsyncThunk(
     try {
       const response = axiosInstance.patch(
         `tickets/update/${ticket.id}`,
-        ticket, // req body
+        {
+          status: ticket.status,
+          ticketPriority: ticket.ticketPriority,
+          description: ticket.description,
+        }, // req body
         {
           headers: {
             "x-access-token": localStorage.getItem("token"),
@@ -168,9 +173,9 @@ const ticketSlice = createSlice({
       })
       .addCase(getAllTicketsforEngineer.fulfilled, (state, action) => {
         if (!action?.payload?.data) return;
-        state.ticketList = action?.payload?.data?.result;
-        state.downloadedTickets = action?.payload?.data?.result;
-        const tickets = action?.payload?.data?.result;
+        state.ticketList = action?.payload?.data?.data;
+        state.downloadedTickets = action?.payload?.data?.data;
+        const tickets = action?.payload?.data?.data;
         state.ticketDistribution = {
           OPEN: 0,
           IN_PROGRESS: 0,
@@ -227,9 +232,9 @@ const ticketSlice = createSlice({
       })
       .addCase(getAllTicketsForAdmin.fulfilled, (state, action) => {
         if (!action?.payload?.data) return;
-        state.ticketList = action?.payload?.data?.result;
-        state.downloadedTickets = action?.payload?.data?.result;
-        const tickets = action?.payload?.data?.result;
+        state.ticketList = action?.payload?.data?.data;
+        state.downloadedTickets = action?.payload?.data?.data;
+        const tickets = action?.payload?.data?.data;
         state.ticketDistribution = {
           OPEN: 0,
           IN_PROGRESS: 0,

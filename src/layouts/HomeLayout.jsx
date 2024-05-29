@@ -50,7 +50,7 @@ function HomeLayout({ children }) {
               </li>
             )}
 
-            {authState.role === "admin" && (
+            {authState.role === "ADMIN" && (
               <li>
                 <Link to="/users">All Users</Link>
               </li>

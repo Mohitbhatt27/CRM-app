@@ -15,27 +15,26 @@ function ListAllUsers() {
       name: "User Id",
       selector: (row) => row.id,
       reorder: true,
+      center: true,
     },
     {
       name: "Email",
       selector: (row) => row.email,
       reorder: true,
+      center: true,
     },
     {
       name: "Name",
       selector: (row) => row.name,
       reorder: true,
+      center: true,
     },
     {
-      name: "Status",
-      selector: (row) => row.userStatus,
-      reorder: true,
-    },
-    {
-      name: "Type",
-      selector: (row) => row.userType,
+      name: "Role",
+      selector: (row) => row.role,
       reorder: true,
       sortable: true,
+      center: true,
     },
   ];
 
@@ -45,7 +44,6 @@ function ListAllUsers() {
     name: "",
     email: "",
     userType: "",
-    userStatus: "",
     clientName: "",
     id: "",
   });
@@ -82,8 +80,8 @@ function ListAllUsers() {
         "x-access-token": localStorage.getItem("token"),
       },
     });
-    console.log(response);
-    setUserList(response?.data?.result);
+
+    setUserList(response?.data?.data);
   }
 
   useEffect(() => {
@@ -113,10 +111,10 @@ function ListAllUsers() {
             onRowClicked={(row) => {
               setUserDisplay({
                 name: row.name,
-                clientName: row.clientName,
+
                 email: row.email,
-                userStatus: row.userStatus,
-                userType: row.userType,
+
+                role: row.userType,
                 id: row.id,
               });
               document.getElementById("user_details_modal").showModal();

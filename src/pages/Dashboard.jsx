@@ -10,6 +10,7 @@ const ExpandedComponent = ({ data }) => (
 );
 function Dashboard() {
   const [ticketState] = useTickets();
+
   const role = useSelector((state) => state.auth.role);
 
   const [selectedTicket, setSelectedTicket] = useState({});
@@ -19,12 +20,12 @@ function Dashboard() {
       name: "Ticket Id",
       selector: (row) => row.id,
       reorder: true,
-      grow: 1.5,
+      grow: 1,
       sortable: true,
     },
     {
       name: "Title",
-      selector: (row) => row.title,
+      selector: (row) => row.title.substring(0, 10) + "...",
       reorder: true,
       grow: 1.25,
       sortable: true,
@@ -32,7 +33,7 @@ function Dashboard() {
     },
     {
       name: "Description",
-      selector: (row) => row.description,
+      selector: (row) => row.description.substring(0, 20) + "...",
       reorder: true,
       grow: 1.5,
       sortable: true,
@@ -117,7 +118,11 @@ function Dashboard() {
           />
         )}
         {role != "CUSTOMER" && (
-          <TicketDetailsModal ticket={selectedTicket} key={selectedTicket.id} />
+          <TicketDetailsModal
+            ticket={selectedTicket}
+            key={selectedTicket.id}
+            id={selectedTicket.id}
+          />
         )}
       </div>
     </HomeLayout>
