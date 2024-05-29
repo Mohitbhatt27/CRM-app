@@ -24,7 +24,6 @@ export const getAllTicketsForAdmin = createAsyncThunk(
         },
       });
       toast.promise(response, {
-        success: "Successfully loaded all the tickets",
         loading: "Fetching tickets",
         error: "Something went wrong",
       });
@@ -46,7 +45,6 @@ export const getAllCreatedTicketsforTheUser = createAsyncThunk(
         },
       });
       toast.promise(response, {
-        success: "Successfully loaded all the tickets",
         loading: "Fetching tickets belonging to you",
         error: "Something went wrong",
       });
@@ -68,7 +66,6 @@ export const getAllTicketsforEngineer = createAsyncThunk(
         },
       });
       toast.promise(response, {
-        success: "Successfully loaded all the tickets",
         loading: "Fetching tickets belonging to you",
         error: "Something went wrong",
       });
@@ -189,7 +186,7 @@ const ticketSlice = createSlice({
         });
       })
       .addCase(updateTicket.fulfilled, (state, action) => {
-        const updatedTicket = action.payload.data.result;
+        const updatedTicket = action.payload.data.data;
         state.ticketList = state.ticketList.map((ticket) => {
           if (ticket.id == updatedTicket.id) return updatedTicket;
           return ticket;
@@ -198,6 +195,7 @@ const ticketSlice = createSlice({
           if (ticket.id == updatedTicket.id) return updatedTicket;
           return ticket;
         });
+
         state.ticketDistribution = {
           OPEN: 0,
           IN_PROGRESS: 0,

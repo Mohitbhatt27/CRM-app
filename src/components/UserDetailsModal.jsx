@@ -32,6 +32,7 @@ function UserDetailsModal({ user, resetTable }) {
           role: user.role,
         });
         resetTable();
+        document.getElementById("user_details_modal").close();
       }
     } catch (error) {
       console.log("printing error", error);
@@ -40,19 +41,19 @@ function UserDetailsModal({ user, resetTable }) {
   }
 
   return (
-    <div className="w-full h-full">
-      <dialog id="user_details_modal" className="modal h-full">
+    <div className="w-full">
+      <dialog id="user_details_modal" className="modal max-h-[90vh]">
         <div className="modal-box text-lg font-semibold ">
           <h3 className="font-bold text-lg">User Details</h3>
-          <p className="py-4">
+          <div className="py-4">
             Name: <span className="text-yellow-500"> {userDisplay.name}</span>
-          </p>
+          </div>
 
-          <p className="py-4">
+          <div className="py-4">
             Email: <span className="text-yellow-500"> {userDisplay.email}</span>
-          </p>
+          </div>
 
-          <p className="py-4">
+          <div className="py-4">
             Role:
             <span className="text-yellow-500">
               <details className="dropdown ml-2" id="userTypeDropdown">
@@ -75,7 +76,7 @@ function UserDetailsModal({ user, resetTable }) {
                 </ul>
               </details>
             </span>
-          </p>
+          </div>
         </div>
         <form method="dialog" className="modal-backdrop">
           <button>close</button>

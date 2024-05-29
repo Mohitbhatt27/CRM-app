@@ -15,26 +15,26 @@ function ListAllUsers() {
       name: "User Id",
       selector: (row) => row.id,
       reorder: true,
-      center: true,
+      cell: (row) => <div className="text-center">{row.id}</div>,
     },
     {
       name: "Email",
       selector: (row) => row.email,
       reorder: true,
-      center: true,
+      cell: (row) => <div className="text-center">{row.email}</div>,
     },
     {
       name: "Name",
       selector: (row) => row.name,
       reorder: true,
-      center: true,
+      cell: (row) => <div className="text-center">{row.name}</div>,
     },
     {
       name: "Role",
       selector: (row) => row.role,
       reorder: true,
       sortable: true,
-      center: true,
+      cell: (row) => <div className="text-center">{row.role}</div>,
     },
   ];
 

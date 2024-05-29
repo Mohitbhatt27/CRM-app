@@ -32,7 +32,7 @@ function Login() {
     }
 
     const response = await dispatch(login(loginDetails));
-    console.log(response);
+
     if (response.payload) {
       navigate("/");
     } else resetLoginState();

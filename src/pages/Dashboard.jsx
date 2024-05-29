@@ -20,8 +20,9 @@ function Dashboard() {
       name: "Ticket Id",
       selector: (row) => row.id,
       reorder: true,
-      grow: 1,
+      grow: 1.5,
       sortable: true,
+      cell: (row) => <div className="text-center">{row.id}</div>,
     },
     {
       name: "Title",
@@ -29,7 +30,9 @@ function Dashboard() {
       reorder: true,
       grow: 1.25,
       sortable: true,
-      center: true,
+      cell: (row) => (
+        <div className="text-center">{row.title.substring(0, 10) + "..."}</div>
+      ),
     },
     {
       name: "Description",
@@ -37,6 +40,11 @@ function Dashboard() {
       reorder: true,
       grow: 1.5,
       sortable: true,
+      cell: (row) => (
+        <div className="text-center">
+          {row.description.substring(0, 20) + "..."}
+        </div>
+      ),
     },
     {
       name: "Reporter",
@@ -44,6 +52,7 @@ function Dashboard() {
       reorder: true,
       grow: 1.5,
       sortable: true,
+      cell: (row) => <div className="text-center">{row.assignedTo}</div>,
     },
     {
       name: "Priority",
@@ -51,16 +60,14 @@ function Dashboard() {
       reorder: true,
       sortable: true,
       grow: 0.5,
-
-      center: true,
+      cell: (row) => <div className="text-center">{row.ticketPriority}</div>,
     },
-
     {
       name: "Status",
       selector: (row) => row.status,
       reorder: true,
       sortable: true,
-      center: true,
+      cell: (row) => <div className="text-center">{row.status}</div>,
     },
   ];
 

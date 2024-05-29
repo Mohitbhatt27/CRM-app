@@ -1,14 +1,14 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import useTickets from "../../hooks/useTickets";
 import HomeLayout from "../../layouts/HomeLayout";
 import { createTicket } from "../../Redux/Slices/TicketSlice";
 
 function CreateTicket() {
   const dispatch = useDispatch();
-  useTickets();
+  const navigate = useNavigate();
 
   const [ticket, setTicket] = useState({
     title: "",
@@ -29,13 +29,24 @@ function CreateTicket() {
       toast.error("Title and description are mandatory");
       return;
     }
-    const response = await dispatch(createTicket(ticket));
-    if (response?.payload?.status == 201) {
-      // ticket got created successfully
+    try {
+      const response = await dispatch(createTicket(ticket));
+      if (response?.payload?.status == 201) {
+        // ticket got created successfully
+        toast.success("Email sent to user successfully");
+      } else {
+        // handle error
+        toast.error("An error occurred while creating the ticket");
+      }
+    } catch (error) {
+      // handle error
+      toast.error("An error occurred while creating the ticket");
+    } finally {
       setTicket({
         title: "",
         description: "",
       });
+      navigate("/");
     }
   }
 
